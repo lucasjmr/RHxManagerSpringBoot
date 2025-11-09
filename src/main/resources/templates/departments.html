@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Department Management</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+
+
+        header {
+            background: linear-gradient(90deg, #0078ff 0%, #005fcc 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+             background: rgba(255, 255, 255, 0.4);
+        }
+
+        .logout-btn {
+            background: red;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #b81414;
+        }
+
+
+        main {
+            max-width: 1000px;
+            margin: 2.5rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2rem 3rem;
+        }
+
+        h2 {
+            color: #0078ff;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 0.7rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #0078ff;
+            box-shadow: 0 0 4px rgba(0, 120, 255, 0.3);
+            outline: none;
+        }
+
+        button {
+            background: #0078ff;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #005fcc;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #0078ff;
+            color: white;
+            text-align: left;
+            padding: 0.8rem;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9fbff;
+        }
+
+        .action-btn {
+            background: #0078ff;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #005fcc;
+        }
+
+        .delete-btn {
+            background: red;
+
+        }
+
+        .delete-btn:hover {
+            background: #b81414;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left"><h1>Department Management</h1></div>
+    <div class="nav-links">
+        <a th:href="@{/dashboard}" class="back-btn">Back to Dashboard</a>
+        <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
+            <button type="submit" class="logout-btn" style="border:none; cursor:pointer;">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <section>
+        <h2>Add New Department</h2>
+        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+        <p th:if="${success}" th:text="${success}" style="color:green;"></p>
+
+        <form th:action="@{/departments/create}" th:object="${department}" method="post">
+            <input type="text" th:field="*{departmentName}" placeholder="New department name" required>
+            <button type="submit">Create Department</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Department List</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Department Name</th>
+                <th>Manager</th>
+                <th>Member Count</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dept : ${departments}">
+                <td th:text="${dept.id_department}">1</td>
+                <td th:text="${dept.departmentName}">Human Resources</td>
+                <td>
+                    <span th:if="${dept.manager}" th:text="${dept.manager.firstName + ' ' + dept.manager.lastName}">Jane Doe</span>
+                    <span th:unless="${dept.manager}">N/A</span>
+                </td>
+                <td th:text="${#lists.size(dept.employees)}">5</td>
+                <td>
+                    <a th:href="@{/departments/edit/{id}(id=${dept.id_department})}" class="action-btn">Edit</a>
+                    <a th:href="@{/departments/delete/{id}(id=${dept.id_department})}" class="action-btn delete-btn"
+                       onclick="return confirm('Delete this department? All members will be unassigned.');">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer>
+    © 2025 RHxManager — All rights reserved
+</footer>
+
+</body>
+</html>

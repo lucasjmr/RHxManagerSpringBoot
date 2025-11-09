@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+          font-family: "Segoe UI", sans-serif;
+          background-color: #f5f7fa;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+        }
+        .login-container {
+          background: white;
+          padding: 2rem 3rem;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          width: 380px;
+          text-align: center;
+          box-sizing: border-box;
+        }
+        h2 {
+          color: #333;
+          margin-bottom: 1.5rem;
+          font-size: 1.4rem;
+        }
+        label {
+          display: block;
+          text-align: left;
+          font-weight: 500;
+          margin-bottom: 0.5rem;
+          color: #333;
+          font-size: 0.9rem;
+        }
+        input,
+        button {
+          width: 100%;
+          padding: 0.7rem;
+          border-radius: 8px;
+          box-sizing: border-box;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
+        }
+        input {
+          border: 1px solid #ccc;
+          margin-bottom: 1rem;
+        }
+        input:focus {
+          border-color: #0078ff;
+          box-shadow: 0 0 4px rgba(0, 120, 255, 0.3);
+          outline: none;
+        }
+        button {
+          background: #0078ff;
+          color: white;
+          border: none;
+          cursor: pointer;
+          margin-top: 0.3rem;
+        }
+        button:hover {
+          background: #005fcc;
+        }
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <div th:if="${param.logout}" class="message message-success">
+        You have been successfully logged out.
+    </div>
+    <div th:if="${flashMessage}" th:text="${flashMessage}" class="message message-success">
+    </div>
+
+    <div th:if="${param.error}" class="message message-error">
+        Invalid username or password. Please try again.
+    </div>
+
+    <form th:action="@{/login}" method="POST">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Payslip for ' + ${payslip.employe.firstName} + ' ' + ${payslip.employe.lastName}">Payslip
+        Details</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0078ff 0%, #005fcc 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .logout-btn {
+            background: red;
+            color: white;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: #b81414;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2rem 3rem;
+        }
+
+        h2, h3 {
+            color: #0078ff;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 0.4rem;
+        }
+
+        fieldset {
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        legend {
+            color: #0078ff;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #0078ff;
+            color: white;
+            text-align: left;
+            padding: 0.8rem;
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbff;
+        }
+
+        tr:last-child {
+            font-weight: bold;
+            background: #eef3ff;
+        }
+
+        .btn {
+            background: #0078ff;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #005fcc;
+        }
+
+        .btn-print {
+            background: #28a745;
+        }
+
+        .btn-print:hover {
+            background: #1f7e33;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        @media print {
+            header, footer, .btn, .nav-links { display: none; }
+            main { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <h1 th:text="'Payslip — ' + ${payslip.employe.firstName} + ' ' + ${payslip.employe.lastName}">Payslip
+            Details</h1>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/payslips}" class="back-btn">Back to List</a>
+        <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
+            <button type="submit" class="logout-btn" style="border:none; cursor:pointer;">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <div style="text-align: right;">
+        <button class="btn btn-print" onclick="window.print()">🖨 Print</button>
+    </div>
+
+    <h2 th:text="'Period: ' + ${payslip.month} + ' / ' + ${payslip.year}">Period: MM/YYYY</h2>
+
+    <fieldset>
+        <legend>Employee Information</legend>
+        <p><b>Name:</b> <span th:text="${payslip.employe.firstName} + ' ' + ${payslip.employe.lastName}"></span></p>
+        <p><b>Job Title:</b> <span th:text="${payslip.employe.jobName}"></span></p>
+        <p><b>Department:</b> <span
+                th:text="${payslip.employe.department != null ? payslip.employe.department.departmentName : 'N/A'}"></span>
+        </p>
+    </fieldset>
+
+    <h3>Payment Details</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th style="text-align:right;">Amount (€)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Base Salary</td>
+            <td style="text-align:right;"
+                th:text="${#numbers.formatDecimal(payslip.employe.salary, 1, 2, 'COMMA')}"></td>
+        </tr>
+        <tr>
+            <td>Bonus</td>
+            <td style="text-align:right;" th:text="${#numbers.formatDecimal(payslip.bonus, 1, 2, 'COMMA')}"></td>
+        </tr>
+        <tr>
+            <td>Deductions</td>
+            <td style="text-align:right;"
+                th:text="'- ' + ${#numbers.formatDecimal(payslip.deductions, 1, 2, 'COMMA')}"></td>
+        </tr>
+        <tr>
+            <td>NET TO PAY</td>
+            <td style="text-align:right;" th:text="${#numbers.formatDecimal(payslip.net, 1, 2, 'COMMA')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer>
+    © 2025 RHxManager — All rights reserved
+</footer>
+
+</body>
+</html>

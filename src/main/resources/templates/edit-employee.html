@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0078ff 0%, #005fcc 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2rem 3rem;
+        }
+
+        h2 {
+            color: #0078ff;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        fieldset {
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        legend {
+            font-weight: 600;
+            color: #0078ff;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 0.4rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #0078ff;
+            box-shadow: 0 0 4px rgba(0, 120, 255, 0.3);
+            outline: none;
+        }
+
+        .checkbox-list, .scroll-box {
+            height: 180px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            background-color: #f9fbff;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        label {
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            background: #0078ff;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.4rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #005fcc;
+        }
+
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+            margin-left: 1rem;
+        }
+
+        .btn-cancel:hover {
+            background: #b3b3b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left"><h1>Edit Employee</h1></div>
+    <div class="nav-links">
+        <a th:href="@{/employees}">Back to Employees</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+    </div>
+</header>
+
+<main>
+    <h2 th:text="'Editing: ' + ${employee.firstName} + ' ' + ${employee.lastName}">Editing: John Doe</h2>
+
+    <form th:action="@{/employees/update/{id}(id=${employee.id_employe})}" th:object="${employee}" method="post">
+
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label>First Name:</label>
+            <input type="text" th:field="*{firstName}" required>
+
+            <label>Last Name:</label>
+            <input type="text" th:field="*{lastName}" required>
+
+            <label>Grade:</label>
+            <input type="text" th:field="*{grade}">
+
+            <label>Job Title:</label>
+            <input type="text" th:field="*{jobName}">
+
+            <label>Salary:</label>
+            <input type="number" th:field="*{salary}" step="0.01" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Account Information</legend>
+            <p><strong>Username:</strong> <span th:text="*{username}">current.username</span> (cannot be changed)</p>
+            <label>New Password:</label>
+            <input type="password" th:field="*{password}" value="" placeholder="Leave blank to keep current password">
+        </fieldset>
+
+        <fieldset>
+            <legend>Assign Roles</legend>
+            <div class="checkbox-list">
+                <div th:each="role : ${allRoles}" class="checkbox-item">
+                    <input type="checkbox" th:field="*{roles}" th:value="${role.id_role}">
+                    <label th:text="${role.roleName}">ROLE_NAME</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Assign Projects</legend>
+            <div class="scroll-box">
+                <div th:each="project : ${allProjects}" class="checkbox-item">
+                    <input type="checkbox" th:field="*{projects}" th:value="${project.id_project}">
+                    <label th:text="${project.projectName}">PROJECT_NAME</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn">Save Changes</button>
+
+    </form>
+</main>
+
+<footer>
+    © 2025 RHxManager — All rights reserved
+</footer>
+
+</body>
+</html>

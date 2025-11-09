@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payslip Management</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0078ff 0%, #005fcc 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            margin-left: 1rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .logout-btn {
+            background: red;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #b81414;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2.5rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2rem 3rem;
+        }
+
+        h2 {
+            color: #0078ff;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        fieldset {
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            background: #f9fbff;
+        }
+
+        legend {
+            font-weight: 600;
+            color: #0078ff;
+            padding: 0 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        select,
+        input[type="number"],
+        input[type="text"] {
+            width: 180px;
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #0078ff;
+            box-shadow: 0 0 4px rgba(0, 120, 255, 0.3);
+            outline: none;
+        }
+
+        button,
+        a.action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            min-width: 100px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0078ff;
+            color: white;
+        }
+
+        button:hover {
+            background: #005fcc;
+        }
+
+        a.action-btn {
+            background: #ccc;
+            color: #333;
+        }
+
+        a.action-btn:hover {
+            background: #b3b3b3;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #0078ff;
+            color: white;
+            text-align: left;
+            padding: 0.8rem;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9fbff;
+        }
+
+        .view-btn {
+            background: #0078ff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: #005fcc;
+        }
+
+        .error {
+            color: red;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        form {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: nowrap;
+        }
+
+        form label {
+            white-space: nowrap;
+        }
+
+        form select,
+        form input[type="number"],
+        form input[type="text"] {
+            flex: 0 0 auto;
+        }
+
+        form button,
+        form a.action-btn {
+            flex: 0 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left"><h1>Manage Payslips</h1></div>
+    <div class="nav-links">
+        <a th:href="@{/dashboard}" class="back-btn">Dashboard</a>
+        <form th:action="@{/logout}" method="post" style="display:inline; margin:0;">
+            <button type="submit" class="logout-btn" style="border:none; cursor:pointer;">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <section>
+        <h2>Filter Payslips</h2>
+        <form th:action="@{/payslips}" method="get">
+            <label>Employee:</label>
+            <select name="employeeId">
+                <option value="0">-- All Employees --</option>
+                <option th:each="emp : ${allEmployees}"
+                        th:value="${emp.id_employe}"
+                        th:text="${emp.firstName + ' ' + emp.lastName}"
+                        th:selected="${emp.id_employe == selectedEmployeeId}"></option>
+            </select>
+
+            <label>Month:</label>
+            <select name="month">
+                <option value="0">-- All Months --</option>
+                <option th:each="i : ${#numbers.sequence(1, 12)}"
+                        th:value="${i}"
+                        th:text="${i}"
+                        th:selected="${i == selectedMonth}"></option>
+            </select>
+
+            <label>Year:</label>
+            <input type="number" name="year" placeholder="Year" th:value="${selectedYear > 0 ? selectedYear : ''}">
+
+            <button type="submit">Filter</button>
+            <a th:href="@{/payslips}" class="action-btn">Clear</a>
+        </form>
+    </section>
+
+    <section>
+        <h2>Generate New Payslip</h2>
+        <p th:if="${error}" th:text="${error}" class="error"></p>
+        <p th:if="${success}" th:text="${success}" style="color:green;"></p>
+
+        <form th:action="@{/payslips/create}" method="post">
+            <label>Employee:</label>
+            <select name="employeeId" required>
+                <option value="" disabled selected>-- Select Employee --</option>
+                <option th:each="emp : ${allEmployees}"
+                        th:value="${emp.id_employe}"
+                        th:text="${emp.firstName + ' ' + emp.lastName}"></option>
+            </select>
+
+            <label>Month:</label>
+            <select name="month">
+                <option th:each="i : ${#numbers.sequence(1, 12)}"
+                        th:value="${i}"
+                        th:text="${i}"></option>
+            </select>
+
+            <label>Year:</label>
+            <input type="number" name="year" value="2024" min="2000" max="2100" required>
+
+            <button type="submit">Generate</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Payslip List</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Period (M/Y)</th>
+                <th>Employee</th>
+                <th>Net to Pay (€)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:if="${not #lists.isEmpty(payslips)}">
+                <tr th:each="p : ${payslips}">
+                    <td th:text="${p.month + '/' + p.year}">11/2024</td>
+                    <td th:text="${p.employe.firstName + ' ' + p.employe.lastName}">John Doe</td>
+                    <td th:text="${#numbers.formatDecimal(p.net, 1, 2, 'COMMA')}">1500.00</td>
+                    <td><a th:href="@{/payslips/view/{id}(id=${p.id_payslip})}" class="view-btn">View / Print</a></td>
+                </tr>
+            </th:block>
+            <th:block th:if="${#lists.isEmpty(payslips)}">
+                <tr>
+                    <td colspan="4">No payslips found matching the criteria.</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<footer>
+    © 2025 RHxManager — All rights reserved
+</footer>
+
+</body>
+</html>
