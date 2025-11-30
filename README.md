@@ -1,6 +1,6 @@
-# RHxManager
+# RHxManagerSpringBoot
 
-## 👥 Auteurs
+## Auteurs
 
 * Lucas J.
 * Pierre G.
@@ -9,7 +9,7 @@
 * Gabriel B.
 
 
-## 🛠 Stack Technique
+## Stack Technique
 
 * **Langage** : Java 21
 * **Framework** : Spring Boot 3.3.4
@@ -18,14 +18,14 @@
 * **Frontend** : Thymeleaf (Rendu côté serveur), HTML5, CSS3
 * **Sécurité** : Spring Security
 
-## ⚙️ Prérequis
+## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé :
 * **Java Development Kit (JDK) 21**
 * **Maven**
 * **MySQL Server**
 
-## 📦 Installation et Configuration
+## Installation et Configuration
 
 ### 1. Cloner le projet
 ```bash
@@ -59,7 +59,7 @@ mvn spring-boot:run
 
 L'application sera accessible à l'adresse : `http://localhost:8080`.
 
-## 🔑 Compte de Test (Connexion)
+## Compte de Test (Connexion)
 
 Le script de base de données initialise un compte Administrateur par défaut pour tester l'application :
 
@@ -69,7 +69,7 @@ Le script de base de données initialise un compte Administrateur par défaut po
 > **Note** : Le mot de passe est chiffré en base de données via BCrypt.
 
 
-## 🛡️ Règles de Sécurité
+## Règles de Sécurité
 
   * **Accès Public** : Page de connexion (`/login`), ressources statiques (CSS/JS).
   * **Accès Admin** : Toutes les routes de gestion (`/employees`, `/departments`, `/projects`, `/payslips`).
