@@ -1,5 +1,3 @@
-Voici le contenu complet et formaté pour ton fichier `README.md` en français.
-
 ## 👥 Auteurs
 
 * Lucas J.
